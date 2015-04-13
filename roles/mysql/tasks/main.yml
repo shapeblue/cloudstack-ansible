@@ -1,0 +1,33 @@
+# Copyright (C) ShapeBlue Ltd - All Rights Reserved
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential
+# Released by ShapeBlue <info@shapeblue.com>, April 2014
+
+---
+
+- name: Ensure selinux python bindings are installed (Ansible requirement)
+  yum: name=libselinux-python state=present
+
+- name: Ensure mysql python are installed (Ansible requirement)
+  yum: name=MySQL-python state=present
+  
+- name: Ensure mysql server is installed
+  yum: name=mysql-server state=present
+  
+- name: Configure MySQL my.cnf using Template
+  template: src=my.cnf.j2 dest=/etc/my.cnf
+
+- name: restart MySQL
+  service: name=mysqld state=restarted
+
+- name: Ensure MySQL service is started and set to start on boot
+  service: name=mysqld state=started enabled=yes
+  
+- name: update mysql root password
+  mysql_user: user="root" password="{{ mysql_root_password }}" host="localhost" login_user="root" login_password=""
+  
+- name: Ensure Firewall Rules are in place for MySQL
+  lineinfile: dest=/etc/sysconfig/iptables insertafter=":OUTPUT" line="-A INPUT -m state --state NEW -m tcp -p tcp --dport 3306 -j ACCEPT"
+
+- name: restart iptables
+  service: name=iptables state=restarted

@@ -1,0 +1,11 @@
+# Copyright (C) ShapeBlue Ltd - All Rights Reserved
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential
+# Released by ShapeBlue <info@shapeblue.com>, April 2014
+
+---
+
+- name: Install System VM templates (XenServer)
+  command: /usr/share/cloudstack-common/scripts/storage/secondary/cloud-install-sys-tmplt -m /exports/secondary -u "{{ item.url }}" -h "{{ item.hypervisor }}" -F
+  with_items:
+    - "{{ systemvm_templates }}"

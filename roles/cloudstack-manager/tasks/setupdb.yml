@@ -1,0 +1,13 @@
+# Copyright (C) ShapeBlue Ltd - All Rights Reserved
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential
+# Released by ShapeBlue <info@shapeblue.com>, April 2014
+
+---
+
+- name: cloudstack-setup-databases
+  command: "/usr/bin/cloudstack-setup-databases 'cloud':'{{ mysql_cloud_password }}'@'localhost' --deploy-as=root:{{ mysql_root_password }}"
+
+
+- name: Setup CloudStack Manager
+  command: /usr/bin/cloudstack-setup-management

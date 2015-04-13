@@ -1,0 +1,18 @@
+--- 
+- hosts: acs-manager
+  roles: 
+    - mysql
+    - nfs-server
+    - cloudstack-manager
+    - cloudmonkey
+  tasks: 
+    - include: ./roles/cloudstack-manager/tasks/seedstorage.yml
+  vars: 
+    - mysql_root_password: Cl0ud5tack
+    - mysql_cloud_password: Cl0ud5tack
+    - baseurl_cloudstack: "http://packages.shapeblue.com/cloudstack/upstream/centos/4.4"
+    - old_mysql_root_password: ""
+    - systemvm_templates: 
+      - { url: 'http://packages.shapeblue.com/systemvmtemplate/4.4/systemvm64template-4.4-kvm.qcow2.bz2', hypervisor: 'kvm' }
+      - { url: 'http://packages.shapeblue.com/systemvmtemplate/4.4/systemvm64template-4.4-vmware.ova', hypervisor: 'vmware' }
+      - { url: 'http://packages.shapeblue.com/systemvmtemplate/4.4/systemvm64template-4.4-xen.vhd.bz2', hypervisor: 'xenserver' }

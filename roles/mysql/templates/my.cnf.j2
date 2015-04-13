@@ -1,0 +1,53 @@
+# Copyright (C) ShapeBlue Ltd - All Rights Reserved
+# Unauthorized copying of this file, via any medium is strictly prohibited
+# Proprietary and confidential
+# Released by ShapeBlue <info@shapeblue.com>, April 2014
+
+[mysqld]
+datadir=/data/mysql
+max_connections=350
+skip_name_resolve
+
+innodb_buffer_pool_size=128M
+innodb_file_per_table=1
+innodb_additional_mem_pool_size=20M
+innodb_log_buffer_size=16MB
+innodb_flush_log_at_trx_commit=2
+innodb_rollback_on_timeout=1
+innodb_lock_wait_timeout=600
+
+table_cache=512
+thread_cache=16
+query_cache_size=32M
+max_allowed_packet=16M
+
+log_error=error.log
+log_warnings=2
+
+slow_query_log_file=slow.log
+slow_query_log=0
+log_queries_not_using_indexes=1
+long_query_time=0.5 
+min_examined_row_limit=100
+sort_buffer_size=2M
+tmp_table_size=32M
+
+max_heap_table_size=64M 
+  
+log-bin=mysql-bin
+binlog_cache_size=1M
+max_binlog_size=128M
+
+sync_binlog=1
+expire_logs_days=5
+binlog-format=ROW
+
+socket=/var/lib/mysql/mysql.sock
+user=mysql
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+
+[mysqld_safe]
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid

@@ -1,0 +1,26 @@
+---
+
+- name: Ensure NFS packages
+  yum: name={{ item }} state=present
+  with_items:
+    - rpcbind
+    - nfs-utils
+
+- name: Ensure rpcbind is running
+  service: name=rpcbind state=started
+
+- name: Ensure NFS ports are configured
+  command: sed -i -e '/#MOUNTD_NFS_V3="no"/ c\MOUNTD_NFS_V3="yes"' -e '/#RQUOTAD_PORT=875/ c\RQUOTAD_PORT=875' -e '/#LOCKD_TCPPORT=32803/ c\LOCKD_TCPPORT=32803' -e '/#LOCKD_UDPPORT=32769/ c\LOCKD_UDPPORT=32769' -e  '/#MOUNTD_PORT=892/ c\MOUNTD_PORT=892' -e '/#STATD_PORT=662/ c\STATD_PORT=662' -e '/#STATD_OUTGOING_PORT=2020/ c\STATD_OUTGOING_PORT=2020' /etc/sysconfig/nfs
+
+- name: Create export directory
+  file: path={{ item }} state=directory mode=777 owner=root group=root
+  with_items:
+    - "/exports/secondary" 
+    - "/exports/primary"
+
+- name: Configure Exports
+  command: echo "/exports *(rw,async,no_root_squash)" > /etc/exports
+
+- name: Export mounts
+  command: exportfs -a
+
